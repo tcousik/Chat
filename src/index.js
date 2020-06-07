@@ -11,6 +11,10 @@ const firebase = require("firebase");
 require("firebase/firestore");
 
 firebase.initializeApp({
+<<<<<<< HEAD
+=======
+  
+>>>>>>> b437120263e6dbfa39f6e2d734a5564a9e66115a
   authDomain: "chat-app-facc6.firebaseapp.com",
   databaseURL: "https://chat-app-facc6.firebaseio.com",
   projectId: "chat-app-facc6",
