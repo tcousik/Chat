@@ -1,9 +1,11 @@
 import React from "react";
 import ChatList from "../chatlist/chatList";
-import { useRadioGroup } from "@material-ui/core";
+import { Button, withStyles } from "@material-ui/core";
+import styles from "./styles";
+import ChatView from "../chatview/chatView";
 const firebase = require("firebase");
 
-export default class Dashboard extends React.Component {
+class Dashboard extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -23,19 +25,23 @@ export default class Dashboard extends React.Component {
     });
   };
 
+  signOut = () => {
+    firebase.auth().signOut();
+  };
+
   componentDidMount = () => {
-    firebase.auth().onAuthStateChanged(async (_usr) => {
-      if (!_usr) {
+    firebase.auth().onAuthStateChanged(async (_user) => {
+      if (!_user) {
         this.props.history.push("/login");
       } else {
         await firebase
           .firestore()
           .collection("chats")
-          .where("users", "array-contains", _usr.email)
+          .where("users", "array-contains", _user.email)
           .onSnapshot(async (result) => {
             const chats = result.docs.map((_doc) => _doc.data());
             await this.setState({
-              email: _usr.email,
+              email: _user.email,
               chats: chats,
             });
             console.log(this.state);
@@ -45,18 +51,25 @@ export default class Dashboard extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
       <div>
-        <div>Dashboard</div>
         <ChatList
           selectChat={this.selectChat}
           newChatBtn={this.newChatBtnClicked}
-          chat={this.state.chats}
+          chats={this.state.chats}
           userEmail={this.state.email}
           history={this.props.history}
           selectedChatIndex={this.state.selectedChat}
         />
+        {this.state.newChatFormVisible ? null : <ChatView />}
+        <Button className={classes.signOutBtn} onClick={this.signOut}>
+          Sign Out
+        </Button>
       </div>
     );
   }
 }
+
+export default withStyles(styles)(Dashboard);
