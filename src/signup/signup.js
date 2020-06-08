@@ -15,12 +15,63 @@ class Signup extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: null,
-      password: null,
-      passwordConfirmation: null,
+      email: "",
+      password: "",
+      confirmPass: "",
       signupError: "",
     };
   }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  verifyPass = () => this.state.password === this.state.confirmPass;
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (!this.verifyPass()) {
+      this.setState({
+        signupError: "Passwords do not match.",
+      });
+      return;
+    }
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(
+        (authResponse) => {
+          const userObject = {
+            email: authResponse.user.email,
+          };
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(this.state.email)
+            .set(userObject)
+            .then(
+              () => {
+                this.props.history.push("/dashboard");
+              },
+              (databaseError) => {
+                console.log(databaseError);
+                this.setState({
+                  signupError: "Failed to add user",
+                });
+              }
+            );
+        },
+        (authError) => {
+          console.log(authError);
+          this.setState({
+            signupError: "Failed to add user",
+          });
+        }
+      );
+  };
 
   render() {
     const { classes } = this.props;
@@ -32,36 +83,38 @@ class Signup extends React.Component {
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
-          <form className={classes.form} onSubmit={(e) => this.submitSignup(e)}>
+          <form className={classes.form} onSubmit={this.handleSubmit}>
             <FormControl required fullWidth margin="normal">
               <InputLabel htmlFor="signup-email-input">
-                Enter your email...
+                Create a email
               </InputLabel>
               <Input
-                autoComplete="email"
+                name="email"
                 autoFocus
                 id="signup-email-input"
-                onChange={(e) => this.userTyping("email", e)}
+                onChange={this.handleChange}
               ></Input>
             </FormControl>
             <FormControl required fullWidth margin="normal">
               <InputLabel htmlFor="signup-password-input">
-                Create a password...
+                Create a password
               </InputLabel>
               <Input
+                name="password"
                 type="password"
                 id="signup-password-input"
-                onChange={(e) => this.userTyping("password", e)}
+                onChange={this.handleChange}
               ></Input>
             </FormControl>
             <FormControl required fullWidth margin="normal">
               <InputLabel htmlFor="signup-password-confirmation-input">
-                Confirm your password...
+                Confirm your password
               </InputLabel>
               <Input
+                name="confirmPass"
                 type="password"
                 id="signup-password-confirmation-input"
-                onChange={(e) => this.userTyping("passwordConfirmation", e)}
+                onChange={this.handleChange}
               ></Input>
             </FormControl>
             <Button
@@ -97,14 +150,6 @@ class Signup extends React.Component {
       </main>
     );
   }
-
-  userTyping = (type, e) => {
-    console.log(type, e);
-  };
-
-  submitSignup = (e) => {
-    console.log("hey");
-  };
 }
 
 export default withStyles(styles)(Signup);
