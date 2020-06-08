@@ -47,10 +47,13 @@ class ChatList extends React.Component {
                   >
                     <ListItemAvatar>
                       <Avatar alt="Remy Sharp">
-                        {_chat.users
-                          .filter((_user) => _user !== this.props.userEmail)[0]
-                          .split("")[0]
-                          .toUpperCase()}
+                        {
+                          _chat.users
+                            .filter(
+                              (_user) => _user !== this.props.userEmail
+                            )[0]
+                            .split("")[0]
+                        }
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
