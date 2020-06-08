@@ -16,9 +16,9 @@ class ChatList extends React.Component {
   userIsSender = (chat) =>
     chat.messages[chat.messages.length - 1].sender === this.props.userEmail;
 
-  newChat = () => this.props.newChatBtn();
+  newChat = () => this.props.newChatBtnFn();
 
-  selectChat = (index) => this.props.selectChat(index);
+  selectChat = (index) => this.props.selectChatFn(index);
 
   render() {
     const { classes } = this.props;
@@ -47,13 +47,10 @@ class ChatList extends React.Component {
                   >
                     <ListItemAvatar>
                       <Avatar alt="Remy Sharp">
-                        {
-                          _chat.users
-                            .filter(
-                              (_user) => _user !== this.props.userEmail
-                            )[0]
-                            .split("")[0]
-                        }
+                        {_chat.users
+                          .filter((_user) => _user !== this.props.userEmail)[0]
+                          .split("")[0]
+                          .toUpperCase()}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
