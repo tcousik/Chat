@@ -16,9 +16,13 @@ class Dashboard extends React.Component {
     };
   }
 
-  selectChat = (chatIndex) => {};
+  selectChatFn = (chatIndex) => {
+    this.setState({
+      selectedChat: chatIndex,
+    });
+  };
 
-  newChatBtnClicked = () => {
+  newChatBtnFn = () => {
     this.setState({
       newChatFormVisible: true,
       selectedChat: null,
@@ -56,14 +60,20 @@ class Dashboard extends React.Component {
     return (
       <div>
         <ChatList
-          selectChat={this.selectChat}
-          newChatBtn={this.newChatBtnClicked}
+          selectChatFn={this.selectChatFn}
+          newChatBtnFn={this.newChatBtnFn}
           chats={this.state.chats}
           userEmail={this.state.email}
           history={this.props.history}
           selectedChatIndex={this.state.selectedChat}
         />
-        {this.state.newChatFormVisible ? null : <ChatView />}
+        {this.state.newChatFormVisible ? null : (
+          <ChatView
+            user={this.state.email}
+            chat={this.state.chats}
+            index={this.state.selectedChat}
+          />
+        )}
         <Button className={classes.signOutBtn} onClick={this.signOut}>
           Sign Out
         </Button>
