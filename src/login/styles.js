@@ -24,7 +24,7 @@ const styles = (theme) => ({
     marginTop: theme.spacing(),
   },
   submit: {
-    marginTop: theme.spacing(),
+    marginTop: theme.spacing(3),
   },
   noAccountHeader: {
     width: "100%",

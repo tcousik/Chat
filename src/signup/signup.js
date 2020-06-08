@@ -86,10 +86,11 @@ class Signup extends React.Component {
           <form className={classes.form} onSubmit={this.handleSubmit}>
             <FormControl required fullWidth margin="normal">
               <InputLabel htmlFor="signup-email-input">
-                Create a email
+                Create an email
               </InputLabel>
               <Input
                 name="email"
+                autoComplete="email"
                 autoFocus
                 id="signup-email-input"
                 onChange={this.handleChange}
@@ -124,7 +125,7 @@ class Signup extends React.Component {
               color="primary"
               className={classes.submit}
             >
-              Submit
+              Sign Up
             </Button>
           </form>
           {this.state.signupError ? (
