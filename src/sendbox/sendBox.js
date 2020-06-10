@@ -5,6 +5,13 @@ import styles from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 
 class SendBox extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      messageContent: "",
+    };
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -23,15 +30,22 @@ class SendBox extends React.Component {
   }
 
   userTyping = (e) => {
-    console.log("typing");
+    e.keyCode === 13
+      ? this.submitMessage()
+      : this.setState({ messageContent: e.target.value });
   };
+
+  validMessage = (text) => text && text.replace(/\s/g, "").length;
 
   clickedInput = () => {
     console.log("clicked input");
   };
 
   submitMessage = () => {
-    console.log("submit");
+    if (this.validMessage(this.state.messageContent)) {
+      this.props.submitMessageFn(this.state.messageContent);
+      document.getElementById("chatTextBox").value = "";
+    }
   };
 }
 
