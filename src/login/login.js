@@ -40,7 +40,6 @@ class Login extends React.Component {
           this.setState({
             loginError: "Server error",
           });
-          console.log(loginError);
         }
       );
   };
