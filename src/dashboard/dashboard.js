@@ -3,6 +3,7 @@ import ChatList from "../chatlist/chatList";
 import { Button, withStyles } from "@material-ui/core";
 import styles from "./styles";
 import ChatView from "../chatview/chatView";
+import SendBox from "../sendbox/sendBox";
 const firebase = require("firebase");
 
 class Dashboard extends React.Component {
@@ -46,7 +47,6 @@ class Dashboard extends React.Component {
               email: _user.email,
               chats: chats,
             });
-            console.log(this.state);
           });
       }
     });
@@ -72,6 +72,9 @@ class Dashboard extends React.Component {
             index={this.state.selectedChat}
           />
         )}
+        {this.state.selectedChat !== null && !this.state.newChatFormVisible ? (
+          <SendBox />
+        ) : null}
         <Button className={classes.signOutBtn} onClick={this.signOut}>
           Sign Out
         </Button>
