@@ -38,7 +38,7 @@ class SendBox extends React.Component {
   validMessage = (text) => text && text.replace(/\s/g, "").length;
 
   clickedInput = () => {
-    console.log("clicked input");
+    this.props.messageReadFn();
   };
 
   submitMessage = () => {

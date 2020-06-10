@@ -41,7 +41,7 @@ class Dashboard extends React.Component {
           {this.state.selectedChat !== null &&
           !this.state.newChatFormVisible ? (
             <SendBox
-              userClickedInputFn={this.messageRead}
+              messageReadFn={this.messageRead}
               submitMessageFn={this.submitMessage}
             ></SendBox>
           ) : null}
@@ -125,18 +125,18 @@ class Dashboard extends React.Component {
         (_usr) => _usr !== this.state.email
       )[0]
     );
-    if (this.clickedMessageWhereNotSender(chatIndex)) {
+    if (this.receiverClicksChat(chatIndex)) {
       firebase
         .firestore()
         .collection("chats")
         .doc(docKey)
         .update({ receiverHasRead: true });
     } else {
-      console.log("Clicked message where the user was the sender");
+      return null;
     }
   };
 
-  clickedMessageWhereNotSender = (chatIndex) =>
+  receiverClicksChat = (chatIndex) =>
     this.state.chats[chatIndex].messages[
       this.state.chats[chatIndex].messages.length - 1
     ].sender !== this.state.email;
