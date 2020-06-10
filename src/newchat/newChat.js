@@ -57,6 +57,15 @@ class NewChat extends React.Component {
                 id="new-chat-message"
               ></Input>
             </FormControl>
+            <Button
+              fullWidth
+              className={classes.submit}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
           </form>
         </Paper>
       </main>
@@ -94,10 +103,20 @@ class NewChat extends React.Component {
     const usersSnapshot = await firebase.firestore().collection("users").get();
     const exists = usersSnapshot.docs
       .map((_doc) => _doc.data().email)
-      .includes(this.state.username);
+      .includes(this.state.friend);
     this.setState({ serverError: !exists });
     return exists;
   };
+
+  createChat = () => {
+    this.props.newChatSubmitFn({
+      sendTo: this.state.friend,
+      message: this.state.message,
+    });
+  };
+
+  goToChat = () =>
+    this.props.goToChatFn(this.buildDocKey(), this.state.message);
 }
 
 export default withStyles(styles)(NewChat);

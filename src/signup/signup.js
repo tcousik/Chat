@@ -86,10 +86,16 @@ class Signup extends React.Component {
               {this.state.signupError}
             </Typography>
           ) : null}
-          <h5 className={classes.hasAccountHeader}>Already Have An Account?</h5>
-          <Link className={classes.logInLink} to="/login">
-            Log In!
-          </Link>
+          <Typography
+            component="h5"
+            variant="h6"
+            className={classes.hasAccountHeader}
+          >
+            Already Have An Account?{" "}
+            <Link to="/login" className={classes.logInLink}>
+              Log In
+            </Link>
+          </Typography>
         </Paper>
       </main>
     );
